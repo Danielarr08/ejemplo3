@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Productos</title>
+  <style>
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px 20px;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      border-bottom: 2px solid #ccc;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-link {
+      color: #2c3e50;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0 20px;
+      text-decoration: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .menu-link:hover {
+      color: #f39c12;
+      transform: scale(1.2);
+    }
+
+    .submenu {
+      position: relative;
+      margin-top: 10px;
+    }
+
+    .submenu-items {
+      display: none;
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 5px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      top: 35px;
+      left: 0;
+      width: 200px;
+      padding: 5px 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .submenu-items a {
+      display: block;
+      padding: 12px 20px;
+      color: #2c3e50;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .submenu-items a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .submenu:hover .submenu-items {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    body {
+      padding-top: 60px; /* Para evitar que el menú cubra el contenido */
+    }
+
+    .container {
+      margin: 80px 20px 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <a href="#" class="menu-link" title="Inicio">Inicio</a>
+    <div class="submenu">
+      <a href="#" class="menu-link" title="Ejercicios">Ejercicios</a>
+      <div class="submenu-items">
+        <a href="URL_SUBMENU_EJERCICIO1">Fundamentos</a>
+        <a href="URL_SUBMENU_EJERCICIO2">Ejemplo 2</a>
+        <a href="URL_SUBMENU_EJERCICIO2">Ejemplo 3</a>
+        <a href="URL_SUBMENU_EJERCICIO2">Ejemplo 4</a>
+      </div>
+    </div>
+    <a href="#" class="menu-link" title="Evaluación">Evaluación</a>
+  </div>
+
+  <div class="container">
+    <h1>Catálogo de Productos</h1>
+
+    @if(productos.length > 0){
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Seleccionar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(producto of productos; track producto.id){
+            <tr>
+              <td>{{ producto.id }}</td>
+              <td> {{ producto.descripcion }}</td>
+              <td> {{ producto.precio }}</td>
+              <td>
+                <button type="button" class="btn btn-warning" (click)="seleccionarProducto(producto)">Seleccionar</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-danger" (click)="eliminarProducto(producto.id)">Eliminar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p>No hay Productos 😞</p>
+    }
+
+    <div class="col-sm-4">
+      <p>
+        ID: <input type="text" class="form-control" [(ngModel)]="producto.id" >
+      </p>
+      <p>
+        Descripción: <input type="text" class="form-control" [(ngModel)]="producto.descripcion" >
+      </p>
+      <p>
+        Precio: <input type="text" class="form-control" [(ngModel)]="producto.precio" >
+      </p>
+      <p>
+        <button type="button" class="btn btn-primary" (click)="agregarProducto()"> Agregar </button>
+        <button type="button" class="btn btn-primary" (click)="modificarProducto()"> Modificar</button>
+      </p>
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+
+</body>
+</html>
